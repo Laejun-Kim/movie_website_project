@@ -25,13 +25,17 @@ document.addEventListener("DOMContentLoaded", function () {
         // console.log("[제목] : " + title + " [요약] :" + overview);
 
         function createMovieCard(mov) {
-          // 카드 엘리먼트를 생성합니다.
+          // 카드 생성
           const card = document.createElement("div");
           card.classList.add("movie-card");
           card.id = mov["id"];
+          // 카드에 누르면 alert 기능 추가
+          card.addEventListener("click", () => {
+            alert(card.id);
+          });
+
           //   card.addEventListener("click", alert(card.id)); // 이러면 새로고침 하자마자 alert 난리나네
 
-          // 카드 내용을 구성합니다.
           const poster = document.createElement("img");
           poster.setAttribute(
             "src",
@@ -47,7 +51,6 @@ document.addEventListener("DOMContentLoaded", function () {
           const voteAverage = document.createElement("p");
           voteAverage.textContent = "평균 평점: " + mov["vote_average"];
 
-          // 카드에 내용을 추가합니다.
           card.appendChild(poster);
           card.appendChild(title);
           card.appendChild(overview);
@@ -60,6 +63,14 @@ document.addEventListener("DOMContentLoaded", function () {
     .catch((err) => console.error(err));
 });
 
+// setTimeout(() => {
+//   let moviecards = document.querySelectorAll(".movie-card");
+//   function ringAlert() {
+//     console.log(this.id);
+//   }
+
+//   moviecards.forEach((cards) => cards.setAttribute("onclick", ringAlert()));
+// }, 3000);
 // let moviecards = document.querySelectorAll(".movie-card");
 // let ringAlert = () => alert("아무말");
 // moviecards.addEventListener("click", ringAlert);
@@ -76,3 +87,13 @@ document.addEventListener("DOMContentLoaded", function () {
 // 좋아좋아. 배치는 예시에서 styles 긁어오는걸로 금방 처리했고, 사진 넣는건 우여곡절끝에 잘 했고,
 // 심지어 각 카드마다 해당 영화의 id 까지 id로 지정하는데 성공했다.
 // 이제 누르면 id를 뱉어내게 해보자. onclick 쓰면 되려나?
+
+// 으아악 뭘 어떻게 해도 잘 안되네.....
+
+// 어찌어찌 alert까지 했다. 함수를 만들어서 그 안에서 alert 해야 의도대로 작동하지만 세부적인건 모르겠다.
+
+// 이제 검색 기능을 만들어보자. 도대체 어떡해야할까
+// idea : 지금까지 만든 모든걸 if 문에 쑤셔넣어보는건 어떨까? if의 조건으로 검색창이 비어있는지 아닌지를 쓰는거지
+// 검색창에 뭔가 입력되어있으면 그걸 title 에서 찾아내서 걔들만 가지고 card를 생성하는거지.. 가능할까?
+// 지금 data 받아온걸 객체처럼 다룰수 있는 상태니 어떻게든 할 수 있지 않을까??? if 랑 else의 힘을 쓴다면...
+// 시도 ㄱㄱ
