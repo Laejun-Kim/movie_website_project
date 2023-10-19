@@ -35,6 +35,12 @@ function initializeAPI() {
         callback(searchWord);
       };
 
+      // 검색 폼에서 제출 이벤트 리스너 등록
+      const searchForm = document.getElementById("search-form");
+      searchForm.addEventListener("submit", function (event) {
+        handleSearch(event, processSearchInput);
+      });
+
       // 사용자의 입력값을 활용하는 콜백 함수
       function processSearchInput(searchTerm) {
         // searchTerm을 이용하여 원하는 작업을 수행
@@ -52,8 +58,9 @@ function initializeAPI() {
         } else if (searchTerm !== "") {
           console.log("검색어가 비어있지 않아요");
           let searchedMovies = [];
+          let searchTermLower = searchTerm.toLowerCase();
           movies.forEach((mov) => {
-            if (mov.title.includes(searchTerm)) {
+            if (mov.title.toLowerCase().includes(searchTermLower)) {
               searchedMovies.push(mov);
 
               document.getElementById("data-container").innerHTML = "";
@@ -66,12 +73,6 @@ function initializeAPI() {
           });
         }
       }
-
-      // 검색 폼에서 제출 이벤트 리스너 등록
-      const searchForm = document.getElementById("search-form");
-      searchForm.addEventListener("submit", function (event) {
-        handleSearch(event, processSearchInput);
-      });
 
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       movies.forEach((mov) => {
@@ -168,3 +169,4 @@ function createMovieCard(mov) {
 
 //경구님 조언으로 createMovieCard 밖으로 뻄!
 // 검색기능도 동작한다 흐헤헤헤 이제 대소문자 상관없이 작동하도록 바꿔주면 완료
+// toLowercase 를 쓰자. searchTerm 에 이 메서드 적용한걸 따로 변수로 지정해 줘야한다.
