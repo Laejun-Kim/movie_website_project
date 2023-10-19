@@ -89,7 +89,6 @@ function processSearchInput(searchTerm) {
   let movieCardsArr = Array.from(movieCards); // 유사배열인 html collection을 진짜 배열로!
   console.log(movieCardsArr); // 이제 이걸로 검색 기능을 수행
   console.log(movieCardsArr[3].children[1]); //이걸로 title 에 접근가능
-  let titlesArr = forEach(movieCards);
 }
 
 // 검색 폼에서 제출 이벤트 리스너 등록
