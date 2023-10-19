@@ -24,6 +24,31 @@ function initializeAPI() {
       });
       // console.log(titlesArr);
 
+      //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      let handleSearch = (event, callback) => {
+        event.preventDefault();
+        const searchInput = document.getElementById("search-input");
+        const searchWord = searchInput.value;
+        console.log("connected");
+
+        // 입력값을 콜백 함수로 전달
+        callback(searchWord);
+      };
+
+      // 사용자의 입력값을 활용하는 콜백 함수
+      function processSearchInput(searchTerm) {
+        // searchTerm을 이용하여 원하는 작업을 수행
+        console.log("검색어:", searchTerm);
+        console.log(movies[0].title, "검색기능에서도 movies참조가능!");
+      }
+
+      // 검색 폼에서 제출 이벤트 리스너 등록
+      const searchForm = document.getElementById("search-form");
+      searchForm.addEventListener("submit", function (event) {
+        handleSearch(event, processSearchInput);
+      });
+
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       movies.forEach((mov) => {
         const card = createMovieCard(mov);
         dataContainer.appendChild(card);
@@ -70,33 +95,16 @@ function createMovieCard(mov) {
   return card;
 }
 
-let handleSearch = (event, callback) => {
-  event.preventDefault();
-  const searchInput = document.getElementById("search-input");
-  const searchWord = searchInput.value;
-  console.log("connected");
-
-  // 입력값을 콜백 함수로 전달
-  callback(searchWord);
-};
-
-// 사용자의 입력값을 활용하는 콜백 함수
-function processSearchInput(searchTerm) {
-  // searchTerm을 이용하여 원하는 작업을 수행
-  console.log("검색어:", searchTerm);
-  let movieCards = document.getElementsByClassName("movie-card");
-  console.log(movieCards);
-  let movieCardsArr = Array.from(movieCards); // 유사배열인 html collection을 진짜 배열로!
-  console.log(movieCardsArr); // 이제 이걸로 검색 기능을 수행
-  console.log(movieCardsArr[3].children[1]); //이걸로 title 에 접근가능
-}
-
-// 검색 폼에서 제출 이벤트 리스너 등록
-const searchForm = document.getElementById("search-form");
-searchForm.addEventListener("submit", function (event) {
-  handleSearch(event, processSearchInput);
-});
-
+// // 사용자의 입력값을 활용하는 콜백 함수
+// function processSearchInput(searchTerm) {
+//   // searchTerm을 이용하여 원하는 작업을 수행
+//   console.log("검색어:", searchTerm);
+//   let movieCards = document.getElementsByClassName("movie-card");
+//   console.log(movieCards);
+//   let movieCardsArr = Array.from(movieCards); // 유사배열인 html collection을 진짜 배열로!
+//   console.log(movieCardsArr); // 이제 이걸로 검색 기능을 수행
+//   console.log(movieCardsArr[3].children[1]); //이걸로 title 에 접근가능
+// }
 // console.log(titlesArr);
 // console.log(movies);
 
