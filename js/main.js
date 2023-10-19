@@ -66,7 +66,7 @@ function initializeAPI() {
             }
           });
           searchedMovies.length === 0
-            ? alert("검색 결과가 없어요. 다른 검색어를 골라보세요")
+            ? alert("일치하는 검색 결과가 없어요. 다른 검색어를 골라보세요")
             : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
 
           dataContainer.innerHTML = "";
