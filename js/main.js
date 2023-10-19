@@ -17,51 +17,65 @@ document.addEventListener("DOMContentLoaded", function () {
       const dataContainer = document.getElementById("data-container");
       let movies = response.results;
       console.log(movies);
+      console.log(
+        movies.map((x) => {
+          return x.title; //map으로 title만 뽑아내서 그걸 또 배열로 만들었다.
+        })
+      );
+
       movies.forEach((mov) => {
         const card = createMovieCard(mov);
         dataContainer.appendChild(card);
         // let title = mov["title"];
         // let overview = mov["overview"];
         // console.log("[제목] : " + title + " [요약] :" + overview);
-
-        function createMovieCard(mov) {
-          // 카드 생성
-          const card = document.createElement("div");
-          card.classList.add("movie-card");
-          card.id = mov["id"];
-          // 카드에 누르면 alert 기능 추가
-          card.addEventListener("click", () => {
-            alert(card.id);
-          });
-
-          //   card.addEventListener("click", alert(card.id)); // 이러면 새로고침 하자마자 alert 난리나네
-
-          const poster = document.createElement("img");
-          poster.setAttribute(
-            "src",
-            `https://image.tmdb.org/t/p/w300${mov.poster_path}`
-          );
-
-          const title = document.createElement("h3");
-          title.textContent = mov["title"];
-
-          const overview = document.createElement("p");
-          overview.textContent = mov["overview"];
-
-          const voteAverage = document.createElement("p");
-          voteAverage.textContent = "평균 평점: " + mov["vote_average"];
-
-          card.appendChild(poster);
-          card.appendChild(title);
-          card.appendChild(overview);
-          card.appendChild(voteAverage);
-
-          return card;
-        }
       });
     })
     .catch((err) => console.error(err));
 });
+
+// 카드 생성
+function createMovieCard(mov) {
+  const card = document.createElement("div");
+  card.classList.add("movie-card");
+  card.id = mov["id"];
+  // 카드에 누르면 alert 기능 추가
+  card.addEventListener("click", () => {
+    alert(card.id);
+  });
+
+  //   card.addEventListener("click", alert(card.id)); // 이러면 새로고침 하자마자 alert 난리나네
+
+  const poster = document.createElement("img");
+  poster.setAttribute(
+    "src",
+    `https://image.tmdb.org/t/p/w300${mov.poster_path}`
+  );
+
+  const title = document.createElement("h3");
+  title.textContent = mov["title"];
+
+  const overview = document.createElement("p");
+  overview.textContent = mov["overview"];
+
+  const voteAverage = document.createElement("p");
+  voteAverage.textContent = "평균 평점: " + mov["vote_average"];
+
+  card.appendChild(poster);
+  card.appendChild(title);
+  card.appendChild(overview);
+  card.appendChild(voteAverage);
+
+  return card;
+}
+
+let handleSearch = (event) => {
+  event.preventDefault();
+  const searchInput = document.getElementById("search-input");
+  const searchWord = searchInput.value;
+  console.log("connected");
+  console.log(searchWord);
+};
 
 // setTimeout(() => {
 //   let moviecards = document.querySelectorAll(".movie-card");
@@ -97,3 +111,5 @@ document.addEventListener("DOMContentLoaded", function () {
 // 검색창에 뭔가 입력되어있으면 그걸 title 에서 찾아내서 걔들만 가지고 card를 생성하는거지.. 가능할까?
 // 지금 data 받아온걸 객체처럼 다룰수 있는 상태니 어떻게든 할 수 있지 않을까??? if 랑 else의 힘을 쓴다면...
 // 시도 ㄱㄱ
+
+//경구님 조언으로 createMovieCard 밖으로 뻄!

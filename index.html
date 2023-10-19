@@ -6,6 +6,11 @@
   </head>
   <body>
     <h1>인기 영화 목록</h1>
+    <form class="search" onsubmit="handleSearch(event)">
+      <label>영화 검색 : </label>
+      <input type="text" id="search-input" placeholder="search by title" />
+      <button type="submit" id="search-btn">검색</button>
+    </form>
     <div id="data-container"></div>
 
     <script src="/js/main.js"></script>
