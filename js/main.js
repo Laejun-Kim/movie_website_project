@@ -25,6 +25,12 @@ function initializeAPI() {
       // console.log(titlesArr);
 
       //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      // 검색 폼에서 제출 이벤트 리스너 등록
+      const searchForm = document.getElementById("search-form");
+      searchForm.addEventListener("submit", function (event) {
+        handleSearch(event, processSearchInput);
+      });
+
       let handleSearch = (event, callback) => {
         event.preventDefault();
         const searchInput = document.getElementById("search-input");
@@ -34,12 +40,6 @@ function initializeAPI() {
         // 입력값을 콜백 함수로 전달
         callback(searchWord);
       };
-
-      // 검색 폼에서 제출 이벤트 리스너 등록
-      const searchForm = document.getElementById("search-form");
-      searchForm.addEventListener("submit", function (event) {
-        handleSearch(event, processSearchInput);
-      });
 
       // 사용자의 입력값을 활용하는 콜백 함수
       function processSearchInput(searchTerm) {
