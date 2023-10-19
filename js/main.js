@@ -39,7 +39,32 @@ function initializeAPI() {
       function processSearchInput(searchTerm) {
         // searchTerm을 이용하여 원하는 작업을 수행
         console.log("검색어:", searchTerm);
-        console.log(movies[0].title, "검색기능에서도 movies참조가능!");
+        // console.log(movies[0].title, "검색기능에서도 movies참조가능!");
+        if (searchTerm === "") {
+          console.log("검색어가 비어있네요");
+          document.getElementById("data-container").innerHTML = "";
+          //datacontainer를 비우고 카드재생성
+          movies.forEach((mov) => {
+            const card = createMovieCard(mov);
+            dataContainer.appendChild(card);
+          });
+          return;
+        } else if (searchTerm !== "") {
+          console.log("검색어가 비어있지 않아요");
+          let searchedMovies = [];
+          movies.forEach((mov) => {
+            if (mov.title.includes(searchTerm)) {
+              searchedMovies.push(mov);
+
+              document.getElementById("data-container").innerHTML = "";
+              //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
+              searchedMovies.forEach((mov) => {
+                const card = createMovieCard(mov);
+                dataContainer.appendChild(card);
+              });
+            }
+          });
+        }
       }
 
       // 검색 폼에서 제출 이벤트 리스너 등록
@@ -52,9 +77,6 @@ function initializeAPI() {
       movies.forEach((mov) => {
         const card = createMovieCard(mov);
         dataContainer.appendChild(card);
-        // let title = mov["title"];
-        // let overview = mov["overview"];
-        // console.log("[제목] : " + title + " [요약] :" + overview);
       });
     })
     .catch((err) => console.error(err));
@@ -145,3 +167,4 @@ function createMovieCard(mov) {
 // 시도 ㄱㄱ
 
 //경구님 조언으로 createMovieCard 밖으로 뻄!
+// 검색기능도 동작한다 흐헤헤헤 이제 대소문자 상관없이 작동하도록 바꿔주면 완료
