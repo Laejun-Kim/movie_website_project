@@ -14,3 +14,33 @@
   cursor: pointer;
   user-select: none;
 }
+
+body {
+  background: rgb(238, 174, 202);
+  background: radial-gradient(
+    circle,
+    rgba(238, 174, 202, 1) 0%,
+    rgba(148, 187, 233, 1) 100%
+  );
+}
+
+#search-form {
+  display: flex;
+  justify-content: center;
+}
+
+body h1 {
+  text-align: center;
+}
+
+#search-input {
+  margin: 0px 10px;
+  border-color: none;
+  border-radius: 8px;
+  height: 2em;
+  width: 300px;
+}
+label {
+  font-size: 22px;
+  font-weight: 600;
+}

@@ -1,4 +1,6 @@
-document.addEventListener("DOMContentLoaded", function () {
+// let titlesArr = [];
+
+function initializeAPI() {
   const options = {
     method: "GET",
     headers: {
@@ -15,24 +17,77 @@ document.addEventListener("DOMContentLoaded", function () {
     .then((response) => response.json())
     .then((response) => {
       const dataContainer = document.getElementById("data-container");
+      const searchInput = document.getElementById("search-input");
+      searchInput.focus();
+
       let movies = response.results;
       console.log(movies);
-      console.log(
-        movies.map((x) => {
-          return x.title; //map으로 title만 뽑아내서 그걸 또 배열로 만들었다.
-        })
-      );
+      let titlesArr = movies.map((x) => {
+        return x.title; //map으로 title만 뽑아내서 그걸 또 배열로 만들었다.
+      });
+      // console.log(titlesArr);
 
+      //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      // 검색 폼 이벤트 리스너 등록
+      const searchForm = document.getElementById("search-form");
+      searchForm.addEventListener("submit", function (event) {
+        handleSearch(event, processSearchInput);
+      });
+
+      let handleSearch = (event, callback) => {
+        event.preventDefault();
+        const searchWord = searchInput.value;
+
+        // 입력값을 콜백 함수로 전달
+        callback(searchWord);
+      };
+
+      // 사용자의 입력값을 활용하는 콜백 함수
+      function processSearchInput(searchTerm) {
+        // searchTerm을 이용하여 원하는 작업을 수행
+        console.log("검색어:", searchTerm);
+        // console.log(movies[0].title, "검색기능에서도 movies참조가능!");
+        if (searchTerm === "") {
+          console.log("검색어가 비어있네요");
+          dataContainer.innerHTML = "";
+          //datacontainer를 비우고 카드재생성
+          movies.forEach((mov) => {
+            const card = createMovieCard(mov);
+            dataContainer.appendChild(card);
+          });
+          return;
+        } else if (searchTerm !== "") {
+          console.log("검색어가 비어있지 않아요");
+          let searchedMovies = [];
+          let searchTermLower = searchTerm.toLowerCase();
+          movies.forEach((mov) => {
+            if (mov.title.toLowerCase().includes(searchTermLower)) {
+              searchedMovies.push(mov);
+            }
+          });
+          searchedMovies.length === 0
+            ? alert("검색 결과가 없어요. 다른 검색어를 골라보세요")
+            : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
+
+          dataContainer.innerHTML = "";
+          //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
+          searchedMovies.forEach((mov) => {
+            const card = createMovieCard(mov);
+            dataContainer.appendChild(card);
+          });
+        }
+      }
+
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       movies.forEach((mov) => {
         const card = createMovieCard(mov);
         dataContainer.appendChild(card);
-        // let title = mov["title"];
-        // let overview = mov["overview"];
-        // console.log("[제목] : " + title + " [요약] :" + overview);
       });
     })
     .catch((err) => console.error(err));
-});
+}
+
+initializeAPI();
 
 // 카드 생성
 function createMovieCard(mov) {
@@ -43,9 +98,7 @@ function createMovieCard(mov) {
   card.addEventListener("click", () => {
     alert(card.id);
   });
-
-  //   card.addEventListener("click", alert(card.id)); // 이러면 새로고침 하자마자 alert 난리나네
-
+  //카드에 들어갈 요소들 정의
   const poster = document.createElement("img");
   poster.setAttribute(
     "src",
@@ -60,7 +113,7 @@ function createMovieCard(mov) {
 
   const voteAverage = document.createElement("p");
   voteAverage.textContent = "평균 평점: " + mov["vote_average"];
-
+  //위에서 정의한 요소들 카드에 추가
   card.appendChild(poster);
   card.appendChild(title);
   card.appendChild(overview);
@@ -69,14 +122,20 @@ function createMovieCard(mov) {
   return card;
 }
 
-let handleSearch = (event) => {
-  event.preventDefault();
-  const searchInput = document.getElementById("search-input");
-  const searchWord = searchInput.value;
-  console.log("connected");
-  console.log(searchWord);
-};
+// // 사용자의 입력값을 활용하는 콜백 함수
+// function processSearchInput(searchTerm) {
+//   // searchTerm을 이용하여 원하는 작업을 수행
+//   console.log("검색어:", searchTerm);
+//   let movieCards = document.getElementsByClassName("movie-card");
+//   console.log(movieCards);
+//   let movieCardsArr = Array.from(movieCards); // 유사배열인 html collection을 진짜 배열로!
+//   console.log(movieCardsArr); // 이제 이걸로 검색 기능을 수행
+//   console.log(movieCardsArr[3].children[1]); //이걸로 title 에 접근가능
+// }
+// console.log(titlesArr);
+// console.log(movies);
 
+// console.log(titlesArr);
 // setTimeout(() => {
 //   let moviecards = document.querySelectorAll(".movie-card");
 //   function ringAlert() {
@@ -113,3 +172,5 @@ let handleSearch = (event) => {
 // 시도 ㄱㄱ
 
 //경구님 조언으로 createMovieCard 밖으로 뻄!
+// 검색기능도 동작한다 흐헤헤헤 이제 대소문자 상관없이 작동하도록 바꿔주면 완료
+// toLowercase 를 쓰자. searchTerm 에 이 메서드 적용한걸 따로 변수로 지정해 줘야한다.
