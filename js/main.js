@@ -35,7 +35,6 @@ function initializeAPI() {
         event.preventDefault();
         const searchInput = document.getElementById("search-input");
         const searchWord = searchInput.value;
-        console.log("connected");
 
         // 입력값을 콜백 함수로 전달
         callback(searchWord);
@@ -62,14 +61,14 @@ function initializeAPI() {
           movies.forEach((mov) => {
             if (mov.title.toLowerCase().includes(searchTermLower)) {
               searchedMovies.push(mov);
-
-              document.getElementById("data-container").innerHTML = "";
-              //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
-              searchedMovies.forEach((mov) => {
-                const card = createMovieCard(mov);
-                dataContainer.appendChild(card);
-              });
             }
+
+            document.getElementById("data-container").innerHTML = "";
+            //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
+            searchedMovies.forEach((mov) => {
+              const card = createMovieCard(mov);
+              dataContainer.appendChild(card);
+            });
           });
         }
       }
