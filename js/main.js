@@ -22,9 +22,7 @@ function initializeAPI() {
 
       let movies = response.results;
       console.log(movies);
-      let titlesArr = movies.map((x) => {
-        return x.title; //map으로 title만 뽑아내서 그걸 또 배열로 만들었다.
-      });
+
       // console.log(titlesArr);
 
       //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -124,6 +122,9 @@ function createMovieCard(mov) {
   return card;
 }
 
+// let titlesArr = movies.map((x) => {
+//   return x.title; //map으로 title만 뽑아내서 그걸 또 배열로 만들었다.
+// });
 // // 사용자의 입력값을 활용하는 콜백 함수
 // function processSearchInput(searchTerm) {
 //   // searchTerm을 이용하여 원하는 작업을 수행
