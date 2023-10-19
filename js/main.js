@@ -66,7 +66,10 @@ function initializeAPI() {
             }
           });
           searchedMovies.length === 0
-            ? alert("일치하는 검색 결과가 없어요. 다른 검색어를 골라보세요")
+            ? [
+                alert("일치하는 검색 결과가 없어요. 다른 검색어를 골라보세요"),
+                location.reload(),
+              ]
             : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
 
           dataContainer.innerHTML = "";
@@ -89,7 +92,6 @@ function initializeAPI() {
 
 initializeAPI();
 
-// 카드 생성
 function createMovieCard(mov) {
   const card = document.createElement("div");
   card.classList.add("movie-card");
