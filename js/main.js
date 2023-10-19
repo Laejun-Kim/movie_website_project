@@ -45,9 +45,7 @@ function createMovieCard(mov) {
   card.addEventListener("click", () => {
     alert(card.id);
   });
-
-  //   card.addEventListener("click", alert(card.id)); // 이러면 새로고침 하자마자 alert 난리나네
-
+  //카드에 들어갈 요소들 정의
   const poster = document.createElement("img");
   poster.setAttribute(
     "src",
@@ -62,7 +60,7 @@ function createMovieCard(mov) {
 
   const voteAverage = document.createElement("p");
   voteAverage.textContent = "평균 평점: " + mov["vote_average"];
-
+  //위에서 정의한 요소들 카드에 추가
   card.appendChild(poster);
   card.appendChild(title);
   card.appendChild(overview);
