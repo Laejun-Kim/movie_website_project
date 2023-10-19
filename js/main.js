@@ -62,13 +62,15 @@ function initializeAPI() {
             if (mov.title.toLowerCase().includes(searchTermLower)) {
               searchedMovies.push(mov);
             }
-
-            document.getElementById("data-container").innerHTML = "";
-            //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
-            searchedMovies.forEach((mov) => {
-              const card = createMovieCard(mov);
-              dataContainer.appendChild(card);
-            });
+          });
+          searchedMovies.length === 0
+            ? alert("검색 결과가 없어요. 다른 검색어를 골라보세요")
+            : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
+          document.getElementById("data-container").innerHTML = "";
+          //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
+          searchedMovies.forEach((mov) => {
+            const card = createMovieCard(mov);
+            dataContainer.appendChild(card);
           });
         }
       }
