@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", function () {
+function initializeAPI() {
   const options = {
     method: "GET",
     headers: {
@@ -32,7 +32,9 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     })
     .catch((err) => console.error(err));
-});
+}
+
+initializeAPI();
 
 // 카드 생성
 function createMovieCard(mov) {
@@ -75,6 +77,7 @@ let handleSearch = (event) => {
   const searchWord = searchInput.value;
   console.log("connected");
   console.log(searchWord);
+  return searchWord;
 };
 
 // setTimeout(() => {
