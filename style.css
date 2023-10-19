@@ -49,3 +49,18 @@ label {
   font-size: 22px;
   font-weight: 600;
 }
+
+h1 a:link {
+  color: black;
+  text-decoration: none;
+}
+h1 a:visited {
+  color: black;
+
+  text-decoration: none;
+}
+h1 a:hover {
+  color: black;
+
+  text-decoration: none;
+}
