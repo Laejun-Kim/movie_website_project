@@ -17,6 +17,9 @@ function initializeAPI() {
     .then((response) => response.json())
     .then((response) => {
       const dataContainer = document.getElementById("data-container");
+      const searchInput = document.getElementById("search-input");
+      searchInput.focus();
+
       let movies = response.results;
       console.log(movies);
       let titlesArr = movies.map((x) => {
@@ -25,7 +28,7 @@ function initializeAPI() {
       // console.log(titlesArr);
 
       //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      // 검색 폼에서 제출 이벤트 리스너 등록
+      // 검색 폼 이벤트 리스너 등록
       const searchForm = document.getElementById("search-form");
       searchForm.addEventListener("submit", function (event) {
         handleSearch(event, processSearchInput);
@@ -33,7 +36,6 @@ function initializeAPI() {
 
       let handleSearch = (event, callback) => {
         event.preventDefault();
-        const searchInput = document.getElementById("search-input");
         const searchWord = searchInput.value;
 
         // 입력값을 콜백 함수로 전달
@@ -47,7 +49,7 @@ function initializeAPI() {
         // console.log(movies[0].title, "검색기능에서도 movies참조가능!");
         if (searchTerm === "") {
           console.log("검색어가 비어있네요");
-          document.getElementById("data-container").innerHTML = "";
+          dataContainer.innerHTML = "";
           //datacontainer를 비우고 카드재생성
           movies.forEach((mov) => {
             const card = createMovieCard(mov);
@@ -66,7 +68,8 @@ function initializeAPI() {
           searchedMovies.length === 0
             ? alert("검색 결과가 없어요. 다른 검색어를 골라보세요")
             : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
-          document.getElementById("data-container").innerHTML = "";
+
+          dataContainer.innerHTML = "";
           //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
           searchedMovies.forEach((mov) => {
             const card = createMovieCard(mov);
@@ -75,7 +78,7 @@ function initializeAPI() {
         }
       }
 
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
       movies.forEach((mov) => {
         const card = createMovieCard(mov);
         dataContainer.appendChild(card);
