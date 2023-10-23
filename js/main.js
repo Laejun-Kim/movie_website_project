@@ -1,4 +1,5 @@
 const dataContainer = document.getElementById("data-container");
+const searchInput = document.getElementById("search-input");
 
 const options = {
   method: "GET",
@@ -15,8 +16,6 @@ fetch(
 )
   .then((response) => response.json())
   .then((response) => {
-    const searchInput = document.getElementById("search-input");
-
     searchInput.focus();
 
     let movies = response.results;
@@ -172,3 +171,5 @@ function createMovieCard(mov) {
 //경구님 조언으로 createMovieCard 밖으로 뻄!
 // 검색기능도 동작한다 흐헤헤헤 이제 대소문자 상관없이 작동하도록 바꿔주면 완료
 // toLowercase 를 쓰자. searchTerm 에 이 메서드 적용한걸 따로 변수로 지정해 줘야한다.
+
+//애초에 fetch를 function으로 감쌀 필요 자체가 없었네 -> initializeAPI 삭제
