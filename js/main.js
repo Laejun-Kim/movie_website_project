@@ -1,95 +1,89 @@
-// let titlesArr = [];
+const dataContainer = document.getElementById("data-container");
+const searchInput = document.getElementById("search-input");
 
-function initializeAPI() {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YzUxODEzMGMyNmQyNDk3MTQzMzI0ZDE2ZmQ5ZmRjMiIsInN1YiI6IjY1MmYzMGEzZWE4NGM3MDBjYTEyYWYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MDJteH71TG0WQ7joW6cLBTmEwqEvkwDjud9DOqQ3WnQ",
-    },
-  };
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YzUxODEzMGMyNmQyNDk3MTQzMzI0ZDE2ZmQ5ZmRjMiIsInN1YiI6IjY1MmYzMGEzZWE4NGM3MDBjYTEyYWYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MDJteH71TG0WQ7joW6cLBTmEwqEvkwDjud9DOqQ3WnQ",
+  },
+};
 
-  fetch(
-    "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      const dataContainer = document.getElementById("data-container");
-      const searchInput = document.getElementById("search-input");
-      searchInput.focus();
+fetch(
+  "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+  options
+)
+  .then((response) => response.json())
+  .then((response) => {
+    searchInput.focus();
 
-      let movies = response.results;
-      console.log(movies);
+    let movies = response.results;
+    console.log(movies);
 
-      // console.log(titlesArr);
+    // console.log(titlesArr);
 
-      //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      // 검색 폼 이벤트 리스너 등록
-      const searchForm = document.getElementById("search-form");
-      searchForm.addEventListener("submit", function (event) {
-        handleSearch(event, processSearchInput);
-      });
+    //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // 검색 폼 이벤트 리스너 등록
+    const searchForm = document.getElementById("search-form");
+    searchForm.addEventListener("submit", function (event) {
+      handleSearch(event, processSearchInput);
+    });
 
-      let handleSearch = (event, callback) => {
-        event.preventDefault();
-        const searchWord = searchInput.value;
+    let handleSearch = (event, callback) => {
+      event.preventDefault();
+      const searchWord = searchInput.value;
 
-        // 입력값을 콜백 함수로 전달
-        callback(searchWord);
-      };
+      // 입력값을 콜백 함수로 전달
+      callback(searchWord);
+    };
 
-      // 사용자의 입력값을 활용하는 콜백 함수
-      function processSearchInput(searchTerm) {
-        // searchTerm을 이용하여 원하는 작업을 수행
-        console.log("검색어:", searchTerm);
-        // console.log(movies[0].title, "검색기능에서도 movies참조가능!");
-        if (searchTerm === "") {
-          console.log("검색어가 비어있네요");
-          dataContainer.innerHTML = "";
-          //datacontainer를 비우고 카드재생성
-          movies.forEach((mov) => {
-            const card = createMovieCard(mov);
-            dataContainer.appendChild(card);
-          });
-          return;
-        } else if (searchTerm !== "") {
-          console.log("검색어가 비어있지 않아요");
-          let searchedMovies = [];
-          let searchTermLower = searchTerm.toLowerCase();
-          movies.forEach((mov) => {
-            if (mov.title.toLowerCase().includes(searchTermLower)) {
-              searchedMovies.push(mov);
-            }
-          });
-          searchedMovies.length === 0
-            ? [
-                alert("일치하는 검색 결과가 없어요. 다른 검색어를 골라보세요"),
-                location.reload(),
-              ]
-            : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
+    // 실질적인 검색을 수행하는 함수
+    function processSearchInput(searchTerm) {
+      console.log("검색어:", searchTerm);
 
-          dataContainer.innerHTML = "";
-          //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
-          searchedMovies.forEach((mov) => {
-            const card = createMovieCard(mov);
-            dataContainer.appendChild(card);
-          });
-        }
+      if (searchTerm === "") {
+        console.log("검색어가 비어있네요");
+        //datacontainer를 비우고 카드재생성
+        dataContainer.innerHTML = "";
+        renderCard(movies);
+
+        return;
+      } else {
+        console.log("검색어가 비어있지 않아요");
+        let searchedMovies = [];
+        let searchTermLower = searchTerm.toLowerCase();
+        movies.forEach((mov) => {
+          if (mov.title.toLowerCase().includes(searchTermLower)) {
+            searchedMovies.push(mov);
+          }
+        });
+        searchedMovies.length === 0
+          ? [
+              alert("일치하는 검색 결과가 없어요. 다른 검색어를 골라보세요"),
+              location.reload(),
+            ]
+          : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
+
+        //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
+        dataContainer.innerHTML = "";
+        renderCard(searchedMovies);
       }
+    }
 
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      movies.forEach((mov) => {
-        const card = createMovieCard(mov);
-        dataContainer.appendChild(card);
-      });
-    })
-    .catch((err) => console.error(err));
+    renderCard(movies);
+  })
+  .catch((err) => console.error(err));
+
+//생성한 카드들을 화면에 뿌리는 함수
+function renderCard(movies) {
+  movies.forEach((mov) => {
+    const card = createMovieCard(mov);
+    dataContainer.appendChild(card);
+  });
 }
 
-initializeAPI();
-
+//카드 하나 하나를 생성하는 함수
 function createMovieCard(mov) {
   const card = document.createElement("div");
   card.classList.add("movie-card");
@@ -177,3 +171,5 @@ function createMovieCard(mov) {
 //경구님 조언으로 createMovieCard 밖으로 뻄!
 // 검색기능도 동작한다 흐헤헤헤 이제 대소문자 상관없이 작동하도록 바꿔주면 완료
 // toLowercase 를 쓰자. searchTerm 에 이 메서드 적용한걸 따로 변수로 지정해 줘야한다.
+
+//애초에 fetch를 function으로 감쌀 필요 자체가 없었네 -> initializeAPI 삭제
