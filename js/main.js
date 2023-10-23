@@ -1,84 +1,80 @@
 const dataContainer = document.getElementById("data-container");
 
-function initializeAPI() {
-  const options = {
-    method: "GET",
-    headers: {
-      accept: "application/json",
-      Authorization:
-        "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YzUxODEzMGMyNmQyNDk3MTQzMzI0ZDE2ZmQ5ZmRjMiIsInN1YiI6IjY1MmYzMGEzZWE4NGM3MDBjYTEyYWYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MDJteH71TG0WQ7joW6cLBTmEwqEvkwDjud9DOqQ3WnQ",
-    },
-  };
+const options = {
+  method: "GET",
+  headers: {
+    accept: "application/json",
+    Authorization:
+      "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2YzUxODEzMGMyNmQyNDk3MTQzMzI0ZDE2ZmQ5ZmRjMiIsInN1YiI6IjY1MmYzMGEzZWE4NGM3MDBjYTEyYWYzYyIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.MDJteH71TG0WQ7joW6cLBTmEwqEvkwDjud9DOqQ3WnQ",
+  },
+};
 
-  fetch(
-    "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
-    options
-  )
-    .then((response) => response.json())
-    .then((response) => {
-      const searchInput = document.getElementById("search-input");
+fetch(
+  "https://api.themoviedb.org/3/movie/top_rated?language=en-US&page=1",
+  options
+)
+  .then((response) => response.json())
+  .then((response) => {
+    const searchInput = document.getElementById("search-input");
 
-      searchInput.focus();
+    searchInput.focus();
 
-      let movies = response.results;
-      console.log(movies);
+    let movies = response.results;
+    console.log(movies);
 
-      // console.log(titlesArr);
+    // console.log(titlesArr);
 
-      //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-      // 검색 폼 이벤트 리스너 등록
-      const searchForm = document.getElementById("search-form");
-      searchForm.addEventListener("submit", function (event) {
-        handleSearch(event, processSearchInput);
-      });
+    //검색 기능 관련~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    // 검색 폼 이벤트 리스너 등록
+    const searchForm = document.getElementById("search-form");
+    searchForm.addEventListener("submit", function (event) {
+      handleSearch(event, processSearchInput);
+    });
 
-      let handleSearch = (event, callback) => {
-        event.preventDefault();
-        const searchWord = searchInput.value;
+    let handleSearch = (event, callback) => {
+      event.preventDefault();
+      const searchWord = searchInput.value;
 
-        // 입력값을 콜백 함수로 전달
-        callback(searchWord);
-      };
+      // 입력값을 콜백 함수로 전달
+      callback(searchWord);
+    };
 
-      // 실질적인 검색을 수행하는 함수
-      function processSearchInput(searchTerm) {
-        console.log("검색어:", searchTerm);
+    // 실질적인 검색을 수행하는 함수
+    function processSearchInput(searchTerm) {
+      console.log("검색어:", searchTerm);
 
-        if (searchTerm === "") {
-          console.log("검색어가 비어있네요");
-          //datacontainer를 비우고 카드재생성
-          dataContainer.innerHTML = "";
-          renderCard(movies);
+      if (searchTerm === "") {
+        console.log("검색어가 비어있네요");
+        //datacontainer를 비우고 카드재생성
+        dataContainer.innerHTML = "";
+        renderCard(movies);
 
-          return;
-        } else {
-          console.log("검색어가 비어있지 않아요");
-          let searchedMovies = [];
-          let searchTermLower = searchTerm.toLowerCase();
-          movies.forEach((mov) => {
-            if (mov.title.toLowerCase().includes(searchTermLower)) {
-              searchedMovies.push(mov);
-            }
-          });
-          searchedMovies.length === 0
-            ? [
-                alert("일치하는 검색 결과가 없어요. 다른 검색어를 골라보세요"),
-                location.reload(),
-              ]
-            : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
+        return;
+      } else {
+        console.log("검색어가 비어있지 않아요");
+        let searchedMovies = [];
+        let searchTermLower = searchTerm.toLowerCase();
+        movies.forEach((mov) => {
+          if (mov.title.toLowerCase().includes(searchTermLower)) {
+            searchedMovies.push(mov);
+          }
+        });
+        searchedMovies.length === 0
+          ? [
+              alert("일치하는 검색 결과가 없어요. 다른 검색어를 골라보세요"),
+              location.reload(),
+            ]
+          : alert(`검색 결과가 ${searchedMovies.length}개 있어요`);
 
-          //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
-          dataContainer.innerHTML = "";
-          renderCard(searchedMovies);
-        }
+        //카드 재생성하되, 검색기능에 걸린 카드로만 재생성
+        dataContainer.innerHTML = "";
+        renderCard(searchedMovies);
       }
+    }
 
-      renderCard(movies);
-    })
-    .catch((err) => console.error(err));
-}
-
-initializeAPI();
+    renderCard(movies);
+  })
+  .catch((err) => console.error(err));
 
 //생성한 카드들을 화면에 뿌리는 함수
 function renderCard(movies) {
