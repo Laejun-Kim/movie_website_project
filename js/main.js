@@ -1,3 +1,5 @@
+const dataContainer = document.getElementById("data-container");
+
 function initializeAPI() {
   const options = {
     method: "GET",
@@ -14,14 +16,8 @@ function initializeAPI() {
   )
     .then((response) => response.json())
     .then((response) => {
-      const dataContainer = document.getElementById("data-container");
       const searchInput = document.getElementById("search-input");
-      function renderCard(movies) {
-        movies.forEach((mov) => {
-          const card = createMovieCard(mov);
-          dataContainer.appendChild(card);
-        });
-      }
+
       searchInput.focus();
 
       let movies = response.results;
@@ -84,6 +80,15 @@ function initializeAPI() {
 
 initializeAPI();
 
+//생성한 카드들을 화면에 뿌리는 함수
+function renderCard(movies) {
+  movies.forEach((mov) => {
+    const card = createMovieCard(mov);
+    dataContainer.appendChild(card);
+  });
+}
+
+//카드 하나 하나를 생성하는 함수
 function createMovieCard(mov) {
   const card = document.createElement("div");
   card.classList.add("movie-card");
