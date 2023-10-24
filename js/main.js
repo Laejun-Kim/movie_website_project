@@ -116,6 +116,8 @@ function createMovieCard(mov) {
   return card;
 }
 
+//random changes in test branch
+
 // let titlesArr = movies.map((x) => {
 //   return x.title; //map으로 title만 뽑아내서 그걸 또 배열로 만들었다.
 // });
